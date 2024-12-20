@@ -1,0 +1,20 @@
+[
+    {
+      "id": "728ed52f",
+      "name":"Student",
+      "price":"600",
+      "img":""
+    },
+    {
+      "id": "728ed52f",
+      "name":"Senior",
+      "price":"900",
+      "img":""
+    },
+    {
+      "id": "728ed52f",
+      "name":"Junior",
+      "price":"700",
+      "img":""
+    }
+  ]
