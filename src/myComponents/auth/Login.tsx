@@ -30,7 +30,7 @@ interface LoginResponse {
 async function loginAndSetCookie(
   identifier: string,
   password: string
-): Promise<boolean> {
+): Promise<1|2|3> {
   try {
     const response = await fetch(import.meta.env.VITE_API_URL + "/api/auth/local", {
       method: "POST",
@@ -41,13 +41,13 @@ async function loginAndSetCookie(
     });
 
     if (!response.ok) {
-      return false;
+      return 1;
     }
 
     const data: LoginResponse = await response.json();
 
     if (!data.jwt) {
-      return false;
+      return 1;
     }
 
     const expirationDate = new Date();
@@ -55,10 +55,10 @@ async function loginAndSetCookie(
 
     document.cookie = `jwt=${data.jwt}; expires=${expirationDate.toUTCString()}; path=/; secure;`;
     document.cookie = `role=${data.user.role}; expires=${expirationDate.toUTCString()}; path=/; secure;`;
-    return true;
+    return data.user.role === "Super-Admin"? 2 : data.user.role === "Sub-Admin" ? 3: 1;
   } catch (error) {
     console.error("Error:", error);
-    return false;
+    return 1;
   }
 }
 
@@ -79,11 +79,10 @@ export const Login = () => {
     try {
       const success = await loginAndSetCookie(values.email, values.password);
 
-      if (success) {
-        setToastMessage("Login successful! Redirecting...");
-        setTimeout(() => {
-          navigate("/app/admins-management");
-        }, 2000);
+      if (success !== 1) {
+          success === 2 ?
+          navigate("/app/admins-management"):
+          navigate("/app/reservation-management");
       } else {
         setToastMessage("Invalid email or password. Please try again.");
       }

@@ -11,6 +11,7 @@ import ActivityManagement from "./myComponents/activity-management/ActivityManag
 import HotelManagement from "./myComponents/hotel-management/HostelManagment"
 import HostelManagement from "./myComponents/hostel-management/HostelManagment"
 import TrasnportManagement from "./myComponents/trasnport-management/TransportManagment"
+import ReservationManagement from "./myComponents/reservation-management/ReservationManagement"
 import PlaceManagement from "./myComponents/Places-management/PlaceManagment"
 import { Button } from "@mui/material"
 import EventsManagement from "./myComponents/events management/EventsManagement"
@@ -55,6 +56,13 @@ function App() {
               </div>
             </div>}>
             {/* <Route path="dashboard" element={<DashBoard />}/> */}
+            <Route path="reservation-management/*" element={
+              <ProtectedRoute>
+                <ProtectedAuthorizedRoute role="Sub-Admin">
+                  <ReservationManagement />
+                </ProtectedAuthorizedRoute>
+              </ProtectedRoute>
+            }/>
             <Route path="hotels-management/*" element={
               <ProtectedRoute>
                 <ProtectedAuthorizedRoute role="Super-Admin">
