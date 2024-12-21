@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Place } from "./place-list/columns";
 import { API_URL, SERVER_URL } from "@/utils";
-import Cookies from "js-cookie";
 
 export default function Header({
     setData,
