@@ -21,6 +21,7 @@ export default function Header({
     const [place, setPlace] = useState("");
     const [price, setPrice] = useState<number | "">("");
     const [capacity, setCapacity] = useState<number | "">("");
+    const [success, setSuccess] = useState(false);
 
     const addHostel = async () => {
         try {
@@ -83,6 +84,8 @@ export default function Header({
             setPrice("");
             setCapacity("");
             setPicture(null);
+            setSuccess(true)
+
         } catch (error) {
             console.error("Error creating hostel:", error);
         }
@@ -95,98 +98,113 @@ export default function Header({
                     <DialogTrigger>Add</DialogTrigger>
                     <DialogContent className="min-w-fit">
                         <DialogHeader>
-                            <DialogTitle className={`text-[${colors.main}] mb-14 text-3xl`}>
-                                Add New Auberge
-                            </DialogTitle>
-                            <div
-                                style={{ marginBottom: "60px" }}
-                                className="flex gap-10 justify-between items-star mb-10"
-                            >
-                                <div className="">
-                                    {picture ? (
-                                        <img
-                                            src={URL.createObjectURL(picture)}
-                                            alt=""
-                                            className="min-w-[300px] min-h-[280px] object-contain border rounded-3xl"
-                                        />
-                                    ) : (
-                                        <div className="flex justify-center items-center w-[330px] h-[330px] overflow-hidden border-2 border-dashed rounded-3xl border-gray-400">
-                                            <label htmlFor="picture">
+                            {success 
+                                ?
+                                    <div className="text-2xl font-bold">
+                                        <img src="/icons/success.png" alt="" className="w-20 mx-auto" />
+                                        <h1 className="font-bold text-3xl text-green-600 text-center my-4">Success!</h1>
+                                        <p className="text-center text-lg text-gray-600">The entry created successfully</p>
+                                        <Button onClick={()=>setSuccess(false)} className="mx-auto block mt-6 bg-green-600 hover:bg-green-500">Create new</Button>
+                                    </div>
+                                :
+                                <>
+                                    <DialogTitle className={`text-[${colors.main}] mb-14 text-3xl`}>
+                                        Add New Auberge
+                                    </DialogTitle>
+                                    <div
+                                        style={{ marginBottom: "60px" }}
+                                        className="flex gap-10 justify-between items-star mb-10"
+                                    >
+                                        <div className="">
+                                            {picture ? (
                                                 <img
-                                                    src="/src/assets/upload img.png"
+                                                    src={URL.createObjectURL(picture)}
                                                     alt=""
-                                                    className="cursor-pointer hover:opacity-70 w-[60px] h-[60px]"
+                                                    className="min-w-[300px] min-h-[280px] object-contain border rounded-3xl"
                                                 />
-                                            </label>
-                                            <Input
-                                                id="picture"
-                                                type="file"
-                                                className="hidden"
-                                                onChange={(e) => {
-                                                    if (e.target.files && e.target.files.length > 0) {
-                                                        setPicture(e.target.files[0]);
-                                                    }
-                                                }}
-                                            />
+                                            ) : (
+                                                <div className="flex justify-center items-center w-[330px] h-[330px] overflow-hidden border-2 border-dashed rounded-3xl border-gray-400">
+                                                    <label htmlFor="picture">
+                                                        <img
+                                                            src="/src/assets/upload img.png"
+                                                            alt=""
+                                                            className="cursor-pointer hover:opacity-70 w-[60px] h-[60px]"
+                                                        />
+                                                    </label>
+                                                    <Input
+                                                        id="picture"
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(e) => {
+                                                            if (e.target.files && e.target.files.length > 0) {
+                                                                setPicture(e.target.files[0]);
+                                                            }
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                                <div className="w-full">
-                                    <div className="flex flex-col gap-2 justify-between mb-4 ">
-                                        <label htmlFor="Name" className="min-w-fit font-medium">
-                                            Name
-                                        </label>
-                                        <Input
-                                            id="Name"
-                                            type="text"
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                            className="h-fit w-[300px]"
-                                        />
+                                        <div className="w-full">
+                                            <div className="flex flex-col gap-2 justify-between mb-4 ">
+                                                <label htmlFor="Name" className="min-w-fit font-medium">
+                                                    Name
+                                                </label>
+                                                <Input
+                                                    id="Name"
+                                                    type="text"
+                                                    value={name}
+                                                    onChange={(e) => setName(e.target.value)}
+                                                    className="h-fit w-[300px]"
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-2 justify-between mb-4 ">
+                                                <label htmlFor="Place" className="min-w-fit font-medium">
+                                                    Place
+                                                </label>
+                                                <Input
+                                                    id="Place"
+                                                    type="text"
+                                                    value={place}
+                                                    onChange={(e) => setPlace(e.target.value)}
+                                                    className="h-fit w-full"
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-2 justify-between mb-4 ">
+                                                <label htmlFor="Price" className="min-w-fit font-medium">
+                                                    Price
+                                                </label>
+                                                <Input
+                                                    id="Price"
+                                                    type="number"
+                                                    min={0}
+                                                    value={price}
+                                                    onChange={(e) => setPrice(Number(e.target.value))}
+                                                    className="h-fit w-full"
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-2 justify-between">
+                                                <label htmlFor="Capacity" className="min-w-fit font-medium">
+                                                    Capacity
+                                                </label>
+                                                <Input
+                                                    id="Capacity"
+                                                    type="number"
+                                                    min={0}
+                                                    value={capacity}
+                                                    onChange={(e) => setCapacity(Number(e.target.value))}
+                                                    className="h-fit w-full"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex flex-col gap-2 justify-between mb-4 ">
-                                        <label htmlFor="Place" className="min-w-fit font-medium">
-                                            Place
-                                        </label>
-                                        <Input
-                                            id="Place"
-                                            type="text"
-                                            value={place}
-                                            onChange={(e) => setPlace(e.target.value)}
-                                            className="h-fit w-full"
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-2 justify-between mb-4 ">
-                                        <label htmlFor="Price" className="min-w-fit font-medium">
-                                            Price
-                                        </label>
-                                        <Input
-                                            id="Price"
-                                            type="number"
-                                            min={0}
-                                            value={price}
-                                            onChange={(e) => setPrice(Number(e.target.value))}
-                                            className="h-fit w-full"
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-2 justify-between">
-                                        <label htmlFor="Capacity" className="min-w-fit font-medium">
-                                            Capacity
-                                        </label>
-                                        <Input
-                                            id="Capacity"
-                                            type="number"
-                                            min={0}
-                                            value={capacity}
-                                            onChange={(e) => setCapacity(Number(e.target.value))}
-                                            className="h-fit w-full"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <Button className="mt-10 block" onClick={addHostel}>
-                                Create
-                            </Button>
+                                    <Button className="mt-10 block w-full" onClick={addHostel}>
+                                        Create
+                                    </Button>
+                                </>
+                            }
+
+
+                            
                         </DialogHeader>
                     </DialogContent>
                 </Dialog>
