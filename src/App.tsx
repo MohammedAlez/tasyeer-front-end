@@ -15,6 +15,7 @@ import PlaceManagement from "./myComponents/Places-management/PlaceManagment"
 import { Button } from "@mui/material"
 import EventsManagement from "./myComponents/events management/EventsManagement"
 import Cookies from "js-cookie";
+import ReservationManagement from "./myComponents/resevation-management/ReservationManagement"
 
 
 const isAuthenticated = () => {
@@ -55,6 +56,13 @@ function App() {
               </div>
             </div>}>
             {/* <Route path="dashboard" element={<DashBoard />}/> */}
+            <Route path="reservation-management/*" element={
+              <ProtectedRoute>
+                <ProtectedAuthorizedRoute role="Sub-Admin">
+                  <ReservationManagement />
+                </ProtectedAuthorizedRoute>
+              </ProtectedRoute>
+            }/>
             <Route path="hotels-management/*" element={
               <ProtectedRoute>
                 <ProtectedAuthorizedRoute role="Super-Admin">

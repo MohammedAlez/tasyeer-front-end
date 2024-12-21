@@ -1,8 +1,28 @@
 import { useEffect, useState } from "react";
-import { Activity, columns } from "./columns";
+import { Reservation, columns } from "./columns";
 import { DataTable } from "./Table";
 
-export default function DemoPage({data, setData}:{data:Activity[], setData:React.Dispatch<React.SetStateAction<Activity[]>>}) {
+
+
+
+const const_data = [
+  {
+    user:"Mohammed",
+    date:"10/01/2024",
+    auberge:"boumerdes auberge 1"
+  },
+  {
+    user:"Ahmed",
+    date:"15/01/2025",
+    auberge:"boumerdes auberge 1"
+  },
+  {
+    user:"Ibrahim",
+    date:"25/12/2024",
+    auberge:"boumerdes auberge 1"
+  },
+]
+export default function DemoPage({data, setData}:{data:Reservation[], setData:React.Dispatch<React.SetStateAction<Reservation[]>>}) {
   
   const [loading, setLoading] = useState(false);
 
@@ -10,12 +30,12 @@ export default function DemoPage({data, setData}:{data:Activity[], setData:React
     getActivities();
   }, []);
 
-  const getActivities = async () => {
+  const getActivities2 = async () => {
     try {
       setLoading(true);
       const API_URL = import.meta.env.VITE_API_URL;
-
-      const res = await fetch(API_URL + `/api/activities`, {
+      
+      const res = await fetch(API_URL + `/api/reservations`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -39,6 +59,9 @@ export default function DemoPage({data, setData}:{data:Activity[], setData:React
     }
   };
 
+  const getActivities=()=>{
+    setData(const_data)
+  }
   return (
     <div className="container mx-auto py-10">
       {loading ? (

@@ -4,53 +4,38 @@ import { ActionCell } from "./ActionCell"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+
 export type Reservation = {
-  id: string
-  name: string
-  type: string
-  startTime: string
-  duration:number, 
-  place:string
+  user:string
+  date:string, 
+  auberge:string
 }
 
 export const columns: ColumnDef<Reservation>[] = [
-  // {
-  //   accessorKey: "image",
-  //   header: "IMAGE",
-  //   cell:({row})=>{
-  //     return <div className="">
-  //       <img src={row.getValue('image')} alt="" className="object-cover bg-blue-400 w-10 h-10 rounded-xl" />
-  //     </div>
-  //   }
-  // },
-  // {
-  //   accessorKey: "name",
-  //   header: "Title",
-  //   cell:({row})=>{
-  //     return <div className="">
-  //       <h1 className='font-medium text-gray-600'>{row.getValue('fullName')}</h1>
-  //     </div>
-  //   }
-  // },
+  
   {
-    accessorKey: "type",
-    header: "Type",
+    accessorKey: "user",
+    header: "Client name",
+    // cell:({row})=>{
+    //   const date:string = row.getValue("date")
+    //   return <div>sadf</div>
+    // }
   },
   {
-    accessorKey: "startTime",
+    accessorKey: "date",
     header: "Start Date",
+    // cell:({row})=>{
+    //   const date:string = row.getValue("date")
+    //   return <div>{date.substring(0,10)}</div>
+    // }
+  },
+  {
+    accessorKey: "auberge",
+    header: "Hostle",
     cell:({row})=>{
-      const date:string = row.getValue("startTime")
-      return <div>{date.substring(0,10)}</div>
+      const date:string = row.getValue("auberge")
+      return <div>some auberge</div>
     }
-  },
-  {
-    accessorKey: "duration",
-    header: "Duration",
-  },
-  {
-    accessorKey: "place",
-    header: "Place",
   },
   // {
   //   accessorKey: "cartStatus",

@@ -19,8 +19,9 @@ export default function DemoPage({data, setData}:{data:Hotel[], setData:React.Di
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`, 
+          // Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`, 
         },
+        mode: 'no-cors',
 
       });
 
