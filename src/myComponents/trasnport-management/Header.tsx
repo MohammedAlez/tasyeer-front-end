@@ -23,7 +23,7 @@ export default function Header({
     const [toPlace, setToPlace] = useState<string>("");
     const [fromTime, setFromTime] = useState<string>("");
     const [toTime, setToTime] = useState<string>("");
-
+    const [success, setSuccess] = useState(false)
     const handleCreate = async () => {
         const payload = {
             data: {
@@ -57,6 +57,7 @@ export default function Header({
                 setFromTime("");
                 setToTime("");
                 setTransportType("bus");
+                setSuccess(true)
             } else {
                 console.error("Failed to create transport.");
             }
@@ -74,98 +75,110 @@ export default function Header({
                     <DialogTrigger>Add</DialogTrigger>
                     <DialogContent className="min-w-fit">
                         <DialogHeader>
-                            <DialogTitle
-                                className={`text-[${colors.main}] mb-14 text-3xl`}
-                            >
-                                Add New Transport
-                            </DialogTitle>
-                            <div
-                                style={{ marginBottom: "60px" }}
-                                className="flex gap-10 justify-between items-start mb-10"
-                            >
-                                <div className="w-full">
-                                    <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
-                                        <label htmlFor="fromPlace" className="min-w-fit font-medium">
-                                            From Place
-                                        </label>
-                                        <Input
-                                            id="fromPlace"
-                                            value={fromPlace}
-                                            onChange={(e) => setFromPlace(e.target.value)}
-                                            type="text"
-                                            className="h-fit w-full"
-                                        />
+                            {success 
+                                ?
+                                    <div className="text-2xl font-bold">
+                                        <img src="/icons/success.png" alt="" className="w-20 mx-auto" />
+                                        <h1 className="font-bold text-3xl text-green-600 text-center my-4">Success!</h1>
+                                        <p className="text-center text-lg text-gray-600">The entry created successfully</p>
+                                        <Button onClick={()=>setSuccess(false)} className="mx-auto block mt-6 bg-green-600 hover:bg-green-500">Create new</Button>
                                     </div>
-                                    <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
-                                        <label htmlFor="toPlace" className="min-w-fit font-medium">
-                                            To Place
-                                        </label>
-                                        <Input
-                                            id="toPlace"
-                                            value={toPlace}
-                                            onChange={(e) => setToPlace(e.target.value)}
-                                            type="text"
-                                            className="h-fit w-full"
-                                        />
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
-                                            <label htmlFor="fromTime" className="min-w-fit font-medium">
-                                                From Time
-                                            </label>
-                                            <Input
-                                                id="fromTime"
-                                                value={fromTime}
-                                                onChange={(e) => setFromTime(e.target.value)}
-                                                type="time"
-                                                className="h-fit w-full"
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
-                                            <label htmlFor="toTime" className="min-w-fit font-medium">
-                                                To Time
-                                            </label>
-                                            <Input
-                                                id="toTime"
-                                                value={toTime}
-                                                onChange={(e) => setToTime(e.target.value)}
-                                                type="time"
-                                                className="h-fit w-full"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
-                                        <label className="min-w-fit font-medium">Type</label>
-                                        <div className="flex gap-2">
-                                            <div
-                                                onClick={() => setTransportType("bus")}
-                                                className={`cursor-pointer ${
-                                                    transportType === "bus"
-                                                        ? "border-blue-500 outline-blue-500 outline-3"
-                                                        : "outline-none"
-                                                } rounded-xl flex-1 border flex gap-2 justify-center p-4`}
-                                            >
-                                                <Bus />
-                                                <span className="text-lg">Bus</span>
+                                :
+                                <>
+                                    <DialogTitle
+                                        className={`text-[${colors.main}] mb-14 text-3xl`}
+                                    >
+                                        Add New Transport
+                                    </DialogTitle>
+                                    <div
+                                        style={{ marginBottom: "60px" }}
+                                        className="flex gap-10 justify-between items-start mb-10"
+                                    >
+                                        <div className="w-full">
+                                            <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
+                                                <label htmlFor="fromPlace" className="min-w-fit font-medium">
+                                                    From Place
+                                                </label>
+                                                <Input
+                                                    id="fromPlace"
+                                                    value={fromPlace}
+                                                    onChange={(e) => setFromPlace(e.target.value)}
+                                                    type="text"
+                                                    className="h-fit w-full"
+                                                />
                                             </div>
-                                            <div
-                                                onClick={() => setTransportType("train")}
-                                                className={`cursor-pointer ${
-                                                    transportType === "train"
-                                                        ? "border-blue-500 outline-blue-500 outline-3"
-                                                        : "outline-none"
-                                                } rounded-xl flex-1 border flex gap-2 justify-center p-4`}
-                                            >
-                                                <TrainFront />
-                                                <span className="text-lg">Train</span>
+                                            <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
+                                                <label htmlFor="toPlace" className="min-w-fit font-medium">
+                                                    To Place
+                                                </label>
+                                                <Input
+                                                    id="toPlace"
+                                                    value={toPlace}
+                                                    onChange={(e) => setToPlace(e.target.value)}
+                                                    type="text"
+                                                    className="h-fit w-full"
+                                                />
                                             </div>
+                                            <div className="flex gap-2">
+                                                <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
+                                                    <label htmlFor="fromTime" className="min-w-fit font-medium">
+                                                        From Time
+                                                    </label>
+                                                    <Input
+                                                        id="fromTime"
+                                                        value={fromTime}
+                                                        onChange={(e) => setFromTime(e.target.value)}
+                                                        type="time"
+                                                        className="h-fit w-full"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
+                                                    <label htmlFor="toTime" className="min-w-fit font-medium">
+                                                        To Time
+                                                    </label>
+                                                    <Input
+                                                        id="toTime"
+                                                        value={toTime}
+                                                        onChange={(e) => setToTime(e.target.value)}
+                                                        type="time"
+                                                        className="h-fit w-full"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col gap-2 justify-between mb-4 min-w-[300px]">
+                                                <label className="min-w-fit font-medium">Type</label>
+                                                <div className="flex gap-2">
+                                                    <div
+                                                        onClick={() => setTransportType("bus")}
+                                                        className={`cursor-pointer ${
+                                                            transportType === "bus"
+                                                                ? "border-blue-500 outline-blue-500 outline-3"
+                                                                : "outline-none"
+                                                        } rounded-xl flex-1 border flex gap-2 justify-center p-4`}
+                                                    >
+                                                        <Bus />
+                                                        <span className="text-lg">Bus</span>
+                                                    </div>
+                                                    <div
+                                                        onClick={() => setTransportType("train")}
+                                                        className={`cursor-pointer ${
+                                                            transportType === "train"
+                                                                ? "border-blue-500 outline-blue-500 outline-3"
+                                                                : "outline-none"
+                                                        } rounded-xl flex-1 border flex gap-2 justify-center p-4`}
+                                                    >
+                                                        <TrainFront />
+                                                        <span className="text-lg">Train</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <Button onClick={handleCreate} className="mt-10 block w-full">
+                                                Create
+                                            </Button>
                                         </div>
-                                    </div>
-                                    <Button onClick={handleCreate} className="mt-10 block">
-                                        Create
-                                    </Button>
-                                </div>
-                            </div>
+                                    </div>           
+                                </>
+                            }
                         </DialogHeader>
                     </DialogContent>
                 </Dialog>

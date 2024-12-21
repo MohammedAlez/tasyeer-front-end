@@ -21,6 +21,8 @@ export default function Header({
     const [location, setLocation] = useState<string>("");
     const [picture, setPicture] = useState<File | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [success, setSuccess] = useState(false)
+
 
     const handleCreate = async () => {
         if (!name || !location || !picture) {
@@ -91,6 +93,7 @@ export default function Header({
             setName("");
             setLocation("");
             setPicture(null);
+            setSuccess(true)
         } catch (error) {
             console.error("Error creating hostel:", error);
         }finally{
@@ -105,74 +108,86 @@ export default function Header({
                     <DialogTrigger>Add New</DialogTrigger>
                     <DialogContent className="min-w-fit">
                         <DialogHeader>
-                            <DialogTitle className={`text-[${colors.main}] mb-14 text-3xl`}>
-                                Add a new place
-                            </DialogTitle>
-                            <div
-                                style={{ marginBottom: "60px" }}
-                                className="flex gap-10 justify-between items-start mb-10"
-                            >
-                                <div>
-                                    {picture ? (
-                                        <img
-                                            src={URL.createObjectURL(picture)}
-                                            alt=""
-                                            className="min-w-[300px] min-h-[280px] object-contain border rounded-3xl"
-                                        />
-                                    ) : (
-                                        <div className="flex justify-center items-center w-[300px] h-[280px] overflow-hidden border-2 border-dashed rounded-3xl border-gray-400">
-                                            <label htmlFor="picture">
+                            {success 
+                                ?
+                                    <div className="text-2xl font-bold">
+                                        <img src="/icons/success.png" alt="" className="w-20 mx-auto" />
+                                        <h1 className="font-bold text-3xl text-green-600 text-center my-4">Success!</h1>
+                                        <p className="text-center text-lg text-gray-600">The entry created successfully</p>
+                                        <Button onClick={()=>setSuccess(false)} className="mx-auto block mt-6 bg-green-600 hover:bg-green-500">Create new</Button>
+                                    </div>
+                                :
+                                <>
+                                    <DialogTitle className={`text-[${colors.main}] mb-14 text-3xl`}>
+                                        Add a new place
+                                    </DialogTitle>
+                                    <div
+                                        style={{ marginBottom: "60px" }}
+                                        className="flex gap-10 justify-between items-start mb-10"
+                                    >
+                                        <div>
+                                            {picture ? (
                                                 <img
-                                                    src="/src/assets/upload img.png"
+                                                    src={URL.createObjectURL(picture)}
                                                     alt=""
-                                                    className="cursor-pointer hover:opacity-70 w-[60px] h-[60px]"
+                                                    className="min-w-[300px] min-h-[280px] object-contain border rounded-3xl"
                                                 />
-                                            </label>
-                                            <Input
-                                                id="picture"
-                                                type="file"
-                                                className="hidden"
-                                                onChange={(e) => {
-                                                    if (e.target.files && e.target.files.length > 0)
-                                                        setPicture(e.target.files[0]);
-                                                }}
-                                            />
+                                            ) : (
+                                                <div className="flex justify-center items-center w-[300px] h-[280px] overflow-hidden border-2 border-dashed rounded-3xl border-gray-400">
+                                                    <label htmlFor="picture">
+                                                        <img
+                                                            src="/src/assets/upload img.png"
+                                                            alt=""
+                                                            className="cursor-pointer hover:opacity-70 w-[60px] h-[60px]"
+                                                        />
+                                                    </label>
+                                                    <Input
+                                                        id="picture"
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(e) => {
+                                                            if (e.target.files && e.target.files.length > 0)
+                                                                setPicture(e.target.files[0]);
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <div className="flex flex-col gap-2 justify-between mb-4">
-                                        <label htmlFor="name" className="min-w-fit font-medium">
-                                            Title
-                                        </label>
-                                        <Input
-                                            id="name"
-                                            type="text"
-                                            className="h-fit w-[300px]"
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                        />
+                                        <div>
+                                            <div className="flex flex-col gap-2 justify-between mb-4">
+                                                <label htmlFor="name" className="min-w-fit font-medium">
+                                                    Title
+                                                </label>
+                                                <Input
+                                                    id="name"
+                                                    type="text"
+                                                    className="h-fit w-[300px]"
+                                                    value={name}
+                                                    onChange={(e) => setName(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-2 justify-between mb-4">
+                                                <label htmlFor="location" className="min-w-fit font-medium">
+                                                    Location
+                                                </label>
+                                                <Input
+                                                    id="location"
+                                                    className="h-fit w-[300px]"
+                                                    value={location}
+                                                    onChange={(e) => setLocation(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex flex-col gap-2 justify-between mb-4">
-                                        <label htmlFor="location" className="min-w-fit font-medium">
-                                            Location
-                                        </label>
-                                        <Input
-                                            id="location"
-                                            className="h-fit w-[300px]"
-                                            value={location}
-                                            onChange={(e) => setLocation(e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <Button
-                                className="mt-10 block"
-                                onClick={handleCreate}
-                                disabled={loading}
-                            >
-                                {loading ? "Creating..." : "Create"}
-                            </Button>
+                                    <Button
+                                        className="mt-10 block w-full"
+                                        onClick={handleCreate}
+                                        disabled={loading}
+                                    >
+                                        {loading ? "Creating..." : "Create"}
+                                    </Button>
+                                </>
+                            }
                         </DialogHeader>
                     </DialogContent>
                 </Dialog>
