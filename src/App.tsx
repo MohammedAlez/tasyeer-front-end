@@ -14,7 +14,19 @@ import TrasnportManagement from "./myComponents/trasnport-management/TransportMa
 import PlaceManagement from "./myComponents/Places-management/PlaceManagment"
 import { Button } from "@mui/material"
 import EventsManagement from "./myComponents/events management/EventsManagement"
+import Cookies from "js-cookie";
 
+
+const isAuthenticated = () => {
+  var result = Cookies.get('jwt') !== undefined;
+  console.log(result);
+  return result;
+};
+
+// ProtectedRoute component
+const ProtectedRoute = ({ children }: {children: React.ReactElement}) => {
+  return isAuthenticated() ? children : <Navigate to="/login" />;
+};
 
 function App() {
   return (
@@ -29,14 +41,40 @@ function App() {
               </div>
             </div>}>
             {/* <Route path="dashboard" element={<DashBoard />}/> */}
-            <Route path="users-management/*" element={<UserManagement />}/>
-            <Route path="admins-management/*" element={<UserManagement />}/>
-            <Route path="hotels-management/*" element={<HotelManagement />}/>
-            <Route path="hostels-management/*" element={<HostelManagement />}/>
-            <Route path="trasnport-management/*" element={<TrasnportManagement />}/>
-            <Route path="places-management/*" element={<PlaceManagement />}/>
-            <Route path="demands-management" element={<Button>Hello2</Button>}/>
-            <Route path="activities-management" element={<ActivityManagement />}/>
+            <Route path="hotels-management/*" element={
+              <ProtectedRoute>
+                <HotelManagement />
+              </ProtectedRoute>
+            }/>
+            <Route path="admins-management/*" element={
+              <ProtectedRoute>
+                <UserManagement />
+              </ProtectedRoute>
+            }/>
+            <Route path="hostels-management/*" element={
+              <ProtectedRoute>
+                <HostelManagement />
+              </ProtectedRoute>
+          }/>
+            <Route path="trasnport-management/*" element={
+              <ProtectedRoute>
+                <TrasnportManagement />
+              </ProtectedRoute>
+          }/>
+            <Route path="places-management/*" element={
+              <ProtectedRoute>
+                <PlaceManagement />
+              </ProtectedRoute>
+            }
+            />
+            <Route path="demands-management" element={
+            <Button>Hello2</Button>
+          }/>
+            <Route path="activities-management" element={
+              <ProtectedRoute>
+                <ActivityManagement />
+              </ProtectedRoute>
+          }/>
             <Route path="subscriptions-management" element={<SubscriptionsManagement />}/>
             <Route path="events-management" element={<EventsManagement />}/>
           </Route>
