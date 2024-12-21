@@ -8,10 +8,10 @@ export default function DemoPage({data, setData}:{data:Place[], setData:React.Di
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getActivities();
+    getPlaces();
   }, []);
 
-  const getActivities = async () => {
+  const getPlaces = async () => {
     try {
       setLoading(true);
       const API_URL = import.meta.env.VITE_API_URL;

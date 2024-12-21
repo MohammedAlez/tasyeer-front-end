@@ -23,10 +23,24 @@ const isAuthenticated = () => {
   return result;
 };
 
+const isAuthorized = (role: string) => {
+  var result = Cookies.get('role');
+
+  return result === role;
+};
+
 // ProtectedRoute component
 const ProtectedRoute = ({ children }: {children: React.ReactElement}) => {
   return isAuthenticated() ? children : <Navigate to="/login" />;
 };
+
+const ProtectedAuthorizedRoute = ({ children,role }: {children: React.ReactElement,role: string}) => {
+  return isAuthorized(role) ? children : <Unauthorized/>;
+};
+function Unauthorized(){
+  return <>Unauthorized</>;
+}
+
 
 function App() {
   return (
@@ -43,27 +57,37 @@ function App() {
             {/* <Route path="dashboard" element={<DashBoard />}/> */}
             <Route path="hotels-management/*" element={
               <ProtectedRoute>
-                <HotelManagement />
+                <ProtectedAuthorizedRoute role="Super-Admin">
+                  <HotelManagement />
+                </ProtectedAuthorizedRoute>
               </ProtectedRoute>
             }/>
             <Route path="admins-management/*" element={
               <ProtectedRoute>
+                <ProtectedAuthorizedRoute role="Super-Admin">
                 <UserManagement />
+                </ProtectedAuthorizedRoute>
               </ProtectedRoute>
             }/>
             <Route path="hostels-management/*" element={
               <ProtectedRoute>
-                <HostelManagement />
+                <ProtectedAuthorizedRoute role="Super-Admin">
+                  <HostelManagement />
+                </ProtectedAuthorizedRoute>
               </ProtectedRoute>
           }/>
             <Route path="trasnport-management/*" element={
               <ProtectedRoute>
+                <ProtectedAuthorizedRoute role="Super-Admin">
                 <TrasnportManagement />
+                </ProtectedAuthorizedRoute>
               </ProtectedRoute>
           }/>
             <Route path="places-management/*" element={
               <ProtectedRoute>
-                <PlaceManagement />
+                <ProtectedAuthorizedRoute role="Super-Admin">
+                  <PlaceManagement />
+                </ProtectedAuthorizedRoute>
               </ProtectedRoute>
             }
             />
@@ -72,7 +96,9 @@ function App() {
           }/>
             <Route path="activities-management" element={
               <ProtectedRoute>
-                <ActivityManagement />
+                <ProtectedAuthorizedRoute role="Super-Admin">
+                  <ActivityManagement />
+                </ProtectedAuthorizedRoute>
               </ProtectedRoute>
           }/>
             <Route path="subscriptions-management" element={<SubscriptionsManagement />}/>

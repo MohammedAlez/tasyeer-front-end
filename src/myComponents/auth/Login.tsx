@@ -12,6 +12,7 @@ interface LoginResponse {
     id: number;
     documentId: string;
     username: string;
+    role: string;
     email: string;
     provider: string;
     confirmed: boolean;
@@ -53,6 +54,7 @@ async function loginAndSetCookie(
     expirationDate.setDate(expirationDate.getDate() + 2);
 
     document.cookie = `jwt=${data.jwt}; expires=${expirationDate.toUTCString()}; path=/; secure;`;
+    document.cookie = `role=${data.user.role}; expires=${expirationDate.toUTCString()}; path=/; secure;`;
     return true;
   } catch (error) {
     console.error("Error:", error);
