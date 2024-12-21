@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react"
-import { Place, columns } from "./columns"
-import { DataTable } from "./Table"
+import { useEffect, useState } from "react";
+import { Activity, columns } from "./columns";
+import { DataTable } from "./Table";
 
-
-export default function DemoPage({data, setData}:{data:Place[], setData:React.Dispatch<React.SetStateAction<Place[]>>}) {
+export default function DemoPage({data, setData}:{data:Activity[], setData:React.Dispatch<React.SetStateAction<Activity[]>>}) {
   
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getPlaces();
+    getActivities();
   }, []);
 
-  const getPlaces = async () => {
+  const getActivities = async () => {
     try {
       setLoading(true);
       const API_URL = import.meta.env.VITE_API_URL;
 
-      console.log(import.meta.env.VITE_API_TOKEN)
-      console.log(API_URL + `/api/toristic-places?populate=*`)
-      const res = await fetch(API_URL + `/api/toristic-places?populate=*`, {
+      const res = await fetch(API_URL + `/api/activities`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`, 
+          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`, 
         },
 
       });

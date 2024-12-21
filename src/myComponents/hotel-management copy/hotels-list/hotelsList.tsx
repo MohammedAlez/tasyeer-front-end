@@ -1,28 +1,25 @@
 import { useEffect, useState } from "react"
-import { Place, columns } from "./columns"
+import { Hotel, columns } from "./columns"
 import { DataTable } from "./Table"
 
+export default function DemoPage({data, setData}:{data:Hotel[], setData:React.Dispatch<React.SetStateAction<Hotel[]>>}) {
 
-export default function DemoPage({data, setData}:{data:Place[], setData:React.Dispatch<React.SetStateAction<Place[]>>}) {
-  
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    getPlaces();
+    useEffect(() => {
+    getHotels();
   }, []);
 
-  const getPlaces = async () => {
+    const getHotels = async () => {
     try {
       setLoading(true);
       const API_URL = import.meta.env.VITE_API_URL;
 
-      console.log(import.meta.env.VITE_API_TOKEN)
-      console.log(API_URL + `/api/toristic-places?populate=*`)
-      const res = await fetch(API_URL + `/api/toristic-places?populate=*`, {
+      const res = await fetch(API_URL + `/api/hotels?populate=*`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`, 
+          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`, 
         },
 
       });
@@ -33,15 +30,16 @@ export default function DemoPage({data, setData}:{data:Place[], setData:React.Di
 
       const result = await res.json();
       // console.log(result)
+      console.log(result.data)
       setData(result.data)
       // setData(result);
     } catch (error) {
-      console.error("Failed to fetch activities:", error);
+      console.error("Failed to fetch hotels:", error);
     } finally {
       setLoading(false);
     }
   };
-
+  console.log(data)
   return (
     <div className="container mx-auto py-10">
       {loading ? (
